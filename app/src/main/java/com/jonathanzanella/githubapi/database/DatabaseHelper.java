@@ -29,4 +29,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			table.onUpgrade(sqLiteDatabase, oldVersion, newVersion);
 		}
 	}
+
+	public void runMigrations() {
+		getReadableDatabase().close(); //We just need to open a database to execute the migrations
+	}
 }

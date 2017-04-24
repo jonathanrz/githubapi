@@ -7,7 +7,7 @@ public interface SqlTypes {
 	String TEXT = " TEXT";
 	String TEXT_NOT_NULL = " TEXT NOT NULL";
 	String TEXT_UNIQUE = " TEXT UNIQUE";
-	String TEXT_UNIQUE_NOT_NULL = " TEXT UNIQUE NOT NULL\"";
+	String TEXT_UNIQUE_NOT_NULL = " TEXT UNIQUE NOT NULL";
 	String DATE = " INTEGER";
 	String DATE_NOT_NULL = " INTEGER NOT NULL";
 }

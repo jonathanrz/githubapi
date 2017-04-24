@@ -1,10 +1,18 @@
 package com.jonathanzanella.githubapi.language;
 
-public class Language {
+import com.jonathanzanella.githubapi.Model;
+
+public class Language implements Model {
 	private long id;
 	private String name;
 
-	public void setId(long id) {
+	@Override
+	public Long getId() {
+		return id;
+	}
+
+	@Override
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -15,4 +23,6 @@ public class Language {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+
 }
