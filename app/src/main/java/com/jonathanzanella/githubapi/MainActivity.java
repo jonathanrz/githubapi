@@ -6,8 +6,12 @@ import android.util.Log;
 
 import com.jonathanzanella.githubapi.database.DatabaseHelper;
 import com.jonathanzanella.githubapi.database.RepositoryImpl;
+import com.jonathanzanella.githubapi.github.GitHubService;
+import com.jonathanzanella.githubapi.github.GithubRepository;
 import com.jonathanzanella.githubapi.language.Language;
 import com.jonathanzanella.githubapi.language.LanguageRepository;
+import com.jonathanzanella.githubapi.repo.Repo;
+import com.jonathanzanella.githubapi.repo.RepoRepository;
 
 import java.util.List;
 
@@ -19,6 +23,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 	private LanguageRepository languageRepository;
+	private RepoRepository repoRepository;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_main);
 
 		languageRepository = new LanguageRepository(new RepositoryImpl<Language>(new DatabaseHelper(this)));
+		repoRepository = new RepoRepository(new RepositoryImpl<Repo>(new DatabaseHelper(this)));
 
 		Retrofit retrofit = new Retrofit.Builder()
 				.baseUrl("https://api.github.com/")
@@ -33,23 +39,28 @@ public class MainActivity extends AppCompatActivity {
 				.build();
 
 		final GitHubService service = retrofit.create(GitHubService.class);
-		service.listRepos("BearchInc").enqueue(new Callback<List<Repo>>() {
+		service.listRepos("BearchInc").enqueue(new Callback<List<GithubRepository>>() {
 			@Override
-			public void onResponse(Call<List<Repo>> call, Response<List<Repo>> response) {
-				for (final Repo repo : response.body()) {
-					if(repo.language == null)
-						repo.language = "Undefined";
-					Language language = languageRepository.findByName(repo.language);
+			public void onResponse(Call<List<GithubRepository>> call, Response<List<GithubRepository>> response) {
+				for (final GithubRepository githubRepository : response.body()) {
+					Language language = languageRepository.findByName(githubRepository.getLanguage());
 					if(language == null) {
 						language = new Language();
-						language.setName(repo.language);
+						language.setName(githubRepository.getLanguage());
 						languageRepository.save(language);
+					}
+					Repo repo = repoRepository.findByName(githubRepository.getName());
+					if(repo == null) {
+						repo = new Repo();
+						repo.setName(githubRepository.getName());
+						repo.setLanguageId(language.getId());
+						repoRepository.save(repo);
 					}
 				}
 			}
 
 			@Override
-			public void onFailure(Call<List<Repo>> call, Throwable t) {
+			public void onFailure(Call<List<GithubRepository>> call, Throwable t) {
 				Log.e("test", "Error repo=" + t.getMessage());
 			}
 		});

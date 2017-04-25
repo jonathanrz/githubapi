@@ -2,7 +2,8 @@ package com.jonathanzanella.githubapi.database;
 
 public enum Fields {
 	ID("id"),
-	NAME("name");
+	NAME("name"),
+	LANGUAGE_ID("languageId");
 
 	private String fieldName;
 

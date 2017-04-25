@@ -5,12 +5,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.jonathanzanella.githubapi.language.LanguageTable;
+import com.jonathanzanella.githubapi.repo.RepoTable;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 	private static final String DB_NAME = "githubapi";
 	private static final int DB_VERSION = 1;
 
-	private static final Table [] tables = {new LanguageTable()};
+	private static final Table [] tables = {new LanguageTable(), new RepoTable()};
 
 	public DatabaseHelper(Context context) {
 		super(context, DB_NAME, null, DB_VERSION);
