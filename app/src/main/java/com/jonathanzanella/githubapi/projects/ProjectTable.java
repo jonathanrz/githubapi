@@ -1,4 +1,4 @@
-package com.jonathanzanella.githubapi.repo;
+package com.jonathanzanella.githubapi.projects;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -11,10 +11,10 @@ import com.jonathanzanella.githubapi.database.Table;
 import static com.jonathanzanella.githubapi.database.CursorHelper.getLong;
 import static com.jonathanzanella.githubapi.database.CursorHelper.getString;
 
-public class RepoTable implements Table<Repo> {
+public class ProjectTable implements Table<Project> {
 	@Override
 	public String getName() {
-		return "repositories";
+		return "projects";
 	}
 
 	@Override
@@ -51,19 +51,19 @@ public class RepoTable implements Table<Repo> {
 	}
 
 	@Override
-	public ContentValues fillContentValues(Repo repo) {
+	public ContentValues fillContentValues(Project project) {
 		ContentValues values = new ContentValues();
-		values.put(Fields.NAME.toString(), repo.getName());
-		values.put(Fields.LANGUAGE_ID.toString(), repo.getLanguageId());
+		values.put(Fields.NAME.toString(), project.getName());
+		values.put(Fields.LANGUAGE_ID.toString(), project.getLanguageId());
 		return values;
 	}
 
 	@Override
-	public Repo fill(Cursor c) {
-		Repo language = new Repo();
-		language.setId(getLong(c, Fields.ID));
-		language.setName(getString(c, Fields.NAME));
-		language.setLanguageId(getLong(c, Fields.LANGUAGE_ID));
-		return language;
+	public Project fill(Cursor c) {
+		Project project = new Project();
+		project.setId(getLong(c, Fields.ID));
+		project.setName(getString(c, Fields.NAME));
+		project.setLanguageId(getLong(c, Fields.LANGUAGE_ID));
+		return project;
 	}
 }

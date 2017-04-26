@@ -6,8 +6,8 @@ import com.jonathanzanella.githubapi.database.DatabaseHelper;
 import com.jonathanzanella.githubapi.database.RepositoryImpl;
 import com.jonathanzanella.githubapi.language.Language;
 import com.jonathanzanella.githubapi.language.LanguageRepository;
-import com.jonathanzanella.githubapi.repo.Repo;
-import com.jonathanzanella.githubapi.repo.RepoRepository;
+import com.jonathanzanella.githubapi.projects.Project;
+import com.jonathanzanella.githubapi.projects.ProjectRepository;
 
 public class TestApplication extends Application {
 	@Override
@@ -30,18 +30,18 @@ public class TestApplication extends Application {
 		java.setName("Java");
 		languageRepository.save(java);
 
-		RepoRepository repoRepository = new RepoRepository(new RepositoryImpl<Repo>(databaseHelper));
-		Repo python1 = new Repo();
+		ProjectRepository projectRepository = new ProjectRepository(new RepositoryImpl<Project>(databaseHelper));
+		Project python1 = new Project();
 		python1.setName("Python1");
 		python1.setLanguageId(python.getId());
-		repoRepository.save(python1);
-		Repo python2 = new Repo();
+		projectRepository.save(python1);
+		Project python2 = new Project();
 		python2.setName("Python2");
 		python1.setLanguageId(python.getId());
-		repoRepository.save(python2);
-		Repo java1 = new Repo();
+		projectRepository.save(python2);
+		Project java1 = new Project();
 		java1.setName("Java1");
 		java1.setLanguageId(java.getId());
-		repoRepository.save(java1);
+		projectRepository.save(java1);
 	}
 }

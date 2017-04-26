@@ -62,7 +62,7 @@ public class RepositoryImpl<T extends Model> implements Repository<T> {
 				Long newId = db.insertOrThrow(table.getName(), null, table.fillContentValues(data));
 				data.setId(newId);
 			} catch (SQLException e) {
-				Log.e("Repo", "error inserting the record into the database, error=" + e.getMessage());
+				Log.e("Project", "error inserting the record into the database, error=" + e.getMessage());
 				throw e;
 			}
 		} else {

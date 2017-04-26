@@ -11,8 +11,8 @@ import com.jonathanzanella.githubapi.github.GitHubService;
 import com.jonathanzanella.githubapi.github.GithubRepository;
 import com.jonathanzanella.githubapi.language.Language;
 import com.jonathanzanella.githubapi.language.LanguageRepository;
-import com.jonathanzanella.githubapi.repo.Repo;
-import com.jonathanzanella.githubapi.repo.RepoRepository;
+import com.jonathanzanella.githubapi.projects.Project;
+import com.jonathanzanella.githubapi.projects.ProjectRepository;
 
 import java.util.List;
 
@@ -24,13 +24,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SyncService extends IntentService {
 	private LanguageRepository languageRepository;
-	private RepoRepository repoRepository;
+	private ProjectRepository projectRepository;
 
 	public SyncService() {
 		super("SyncService");
 
-		languageRepository = new LanguageRepository(new RepositoryImpl<Language>(new DatabaseHelper(this)));
-		repoRepository = new RepoRepository(new RepositoryImpl<Repo>(new DatabaseHelper(this)));
+		DatabaseHelper databaseHelper = new DatabaseHelper(this);
+		languageRepository = new LanguageRepository(new RepositoryImpl<Language>(databaseHelper));
+		projectRepository = new ProjectRepository(new RepositoryImpl<Project>(databaseHelper));
 	}
 
 	@Override
@@ -51,19 +52,19 @@ public class SyncService extends IntentService {
 						language.setName(githubRepository.getLanguage());
 						languageRepository.save(language);
 					}
-					Repo repo = repoRepository.findByName(githubRepository.getName());
-					if(repo == null) {
-						repo = new Repo();
-						repo.setName(githubRepository.getName());
-						repo.setLanguageId(language.getId());
-						repoRepository.save(repo);
+					Project project = projectRepository.findByName(githubRepository.getName());
+					if(project == null) {
+						project = new Project();
+						project.setName(githubRepository.getName());
+						project.setLanguageId(language.getId());
+						projectRepository.save(project);
 					}
 				}
 			}
 
 			@Override
 			public void onFailure(Call<List<GithubRepository>> call, Throwable t) {
-				Log.e("test", "Error repo=" + t.getMessage());
+				Log.e(SyncService.class.getSimpleName(), "Error in github request=" + t.getMessage());
 			}
 		});
 	}

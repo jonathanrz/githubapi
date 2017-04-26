@@ -11,8 +11,8 @@ import android.widget.TextView;
 import com.jonathanzanella.githubapi.R;
 import com.jonathanzanella.githubapi.database.DatabaseHelper;
 import com.jonathanzanella.githubapi.database.RepositoryImpl;
-import com.jonathanzanella.githubapi.repo.Repo;
-import com.jonathanzanella.githubapi.repo.RepoRepository;
+import com.jonathanzanella.githubapi.projects.Project;
+import com.jonathanzanella.githubapi.projects.ProjectRepository;
 
 import java.util.HashMap;
 import java.util.List;
@@ -46,9 +46,9 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.ViewHo
 			protected Void doInBackground(Void... voids) {
 				DatabaseHelper databaseHelper = new DatabaseHelper(context);
 				languages = new LanguageRepository(new RepositoryImpl<Language>(databaseHelper)).all();
-				RepoRepository repoRepository = new RepoRepository(new RepositoryImpl<Repo>(databaseHelper));
+				ProjectRepository projectRepository = new ProjectRepository(new RepositoryImpl<Project>(databaseHelper));
 				for (Language language : languages) {
-					repoCount.put(language, repoRepository.countReposOfLanguage(language.getId()));
+					repoCount.put(language, projectRepository.countProjectsOfLanguage(language.getId()));
 				}
 				return null;
 			}

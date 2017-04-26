@@ -1,8 +1,8 @@
-package com.jonathanzanella.githubapi.repo;
+package com.jonathanzanella.githubapi.projects;
 
 import com.jonathanzanella.githubapi.Model;
 
-public class Repo implements Model {
+public class Project implements Model {
 	private long id;
 	private String name;
 	private long languageId;

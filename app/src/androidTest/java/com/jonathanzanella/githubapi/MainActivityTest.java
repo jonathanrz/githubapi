@@ -8,8 +8,8 @@ import com.jonathanzanella.githubapi.database.DatabaseHelper;
 import com.jonathanzanella.githubapi.database.RepositoryImpl;
 import com.jonathanzanella.githubapi.language.Language;
 import com.jonathanzanella.githubapi.language.LanguageRepository;
-import com.jonathanzanella.githubapi.repo.Repo;
-import com.jonathanzanella.githubapi.repo.RepoRepository;
+import com.jonathanzanella.githubapi.projects.Project;
+import com.jonathanzanella.githubapi.projects.ProjectRepository;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -47,9 +47,9 @@ public class MainActivityTest {
 
 	@Test
 	public void showRepoCountForFirstLanguage() throws Exception {
-		RepoRepository repoRepository = new RepoRepository(new RepositoryImpl<Repo>(new DatabaseHelper(getTargetContext())));
+		ProjectRepository projectRepository = new ProjectRepository(new RepositoryImpl<Project>(new DatabaseHelper(getTargetContext())));
 		Language language = languages.get(0);
-		long count = repoRepository.countReposOfLanguage(language.getId());
+		long count = projectRepository.countProjectsOfLanguage(language.getId());
 		onLanguageRowView(R.id.row_language_repo_count, language)
 				.check(matches(withText(String.valueOf(count))));
 	}
