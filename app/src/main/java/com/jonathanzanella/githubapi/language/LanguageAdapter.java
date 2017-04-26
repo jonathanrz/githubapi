@@ -20,7 +20,7 @@ import java.util.Map;
 
 public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.ViewHolder> {
 	private List<Language> languages;
-	private Map<Language, Integer> repoCount = new HashMap<>();
+	private Map<Language, Long> repoCount = new HashMap<>();
 
 	static class ViewHolder extends RecyclerView.ViewHolder {
 		private TextView nameView;
@@ -32,7 +32,7 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.ViewHo
 			repoCountView = (TextView) itemView.findViewById(R.id.row_language_repo_count);
 		}
 
-		void setData(Language language, int repoCount) {
+		void setData(Language language, long repoCount) {
 			itemView.setTag(language.getId());
 			nameView.setText(language.getName());
 			repoCountView.setText(String.valueOf(repoCount));
@@ -48,7 +48,7 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.ViewHo
 				languages = new LanguageRepository(new RepositoryImpl<Language>(databaseHelper)).all();
 				RepoRepository repoRepository = new RepoRepository(new RepositoryImpl<Repo>(databaseHelper));
 				for (Language language : languages) {
-					repoCount.put(language, repoRepository.reposOfLanguage(language.getId()).size());
+					repoCount.put(language, repoRepository.countReposOfLanguage(language.getId()));
 				}
 				return null;
 			}

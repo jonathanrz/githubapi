@@ -49,7 +49,7 @@ public class MainActivityTest {
 	public void showRepoCountForFirstLanguage() throws Exception {
 		RepoRepository repoRepository = new RepoRepository(new RepositoryImpl<Repo>(new DatabaseHelper(getTargetContext())));
 		Language language = languages.get(0);
-		int count = repoRepository.reposOfLanguage(language.getId()).size();
+		long count = repoRepository.countReposOfLanguage(language.getId());
 		onLanguageRowView(R.id.row_language_repo_count, language)
 				.check(matches(withText(String.valueOf(count))));
 	}

@@ -2,21 +2,25 @@ package com.jonathanzanella.githubapi.database;
 
 import java.util.Arrays;
 
-public class Select {
+class Select {
 	private String where;
 	private String [] parameters;
 
-	public Select(String where, String [] parameters) {
+	Select(String where, String[] parameters) {
 		this.where = where;
 		this.parameters = parameters;
 	}
 
-	public String getWhere() {
+	String getWhere() {
 		return where;
 	}
 
-	public String[] getParameters() {
+	String[] getParameters() {
 		return parameters;
+	}
+
+	String getQueryAsRawSql() {
+		return String.format(where.replace("?", "%s"), (Object[]) parameters);
 	}
 
 	@Override

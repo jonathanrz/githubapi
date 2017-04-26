@@ -21,8 +21,8 @@ public class RepoRepository {
 		return null;
 	}
 
-	public List<Repo> reposOfLanguage(Long languageId) {
-		return repository.query(table, new Where(Fields.LANGUAGE_ID).eq(languageId));
+	public long countReposOfLanguage(Long languageId) {
+		return repository.count(table, new Where(Fields.LANGUAGE_ID).eq(languageId));
 	}
 
 	public void save(Repo repo) {
