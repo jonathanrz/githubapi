@@ -1,9 +1,9 @@
 package com.jonathanzanella.githubapi.database;
 
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
 import com.jonathanzanella.githubapi.Model;
@@ -48,8 +48,7 @@ public class RepositoryImpl<T extends Model> implements Repository<T> {
 	public long count(Table<T> table, Where where) {
 		SQLiteDatabase db = databaseHelper.getReadableDatabase();
 		Select select = where.query();
-		SQLiteStatement statement = db.compileStatement("select count(*) from " + table.getName() + " where " + select.getQueryAsRawSql());
-		long count = statement.simpleQueryForLong();
+		long count = DatabaseUtils.queryNumEntries(db, table.getName(), select.getWhere(), select.getParameters());
 		db.close();
 		return count;
 	}
