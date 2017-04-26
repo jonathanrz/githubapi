@@ -16,7 +16,6 @@ import java.util.List;
 
 public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.ViewHolder> {
 	private List<Language> languages;
-	private Context context;
 
 	static class ViewHolder extends RecyclerView.ViewHolder {
 		private TextView name;
@@ -27,13 +26,12 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.ViewHo
 		}
 
 		public void setData(Language language) {
+			itemView.setTag(language.getId());
 			name.setText(language.getName());
 		}
 	}
 
 	public LanguageAdapter(final Context context) {
-		this.context = context;
-
 		new AsyncTask<Void, Void, Void>() {
 
 			@Override
