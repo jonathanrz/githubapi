@@ -20,22 +20,34 @@ import java.util.Map;
 
 public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.ViewHolder> {
 	private List<Language> languages;
-	private Map<Language, Long> repoCount = new HashMap<>();
+	private Map<Language, Long> projectsCount = new HashMap<>();
+	private OnLanguageSelectedListener onLanguageSelectedListener;
 
-	static class ViewHolder extends RecyclerView.ViewHolder {
+	public interface OnLanguageSelectedListener {
+		void onLanguageSelected(Language language);
+	}
+
+	class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 		private TextView nameView;
 		private TextView repoCountView;
 
 		ViewHolder(View itemView) {
 			super(itemView);
+			itemView.setOnClickListener(this);
 			nameView = (TextView) itemView.findViewById(R.id.row_language_name);
-			repoCountView = (TextView) itemView.findViewById(R.id.row_language_repo_count);
+			repoCountView = (TextView) itemView.findViewById(R.id.row_language_projects_count);
 		}
 
 		void setData(Language language, long repoCount) {
 			itemView.setTag(language.getId());
 			nameView.setText(language.getName());
 			repoCountView.setText(String.valueOf(repoCount));
+		}
+
+		@Override
+		public void onClick(View view) {
+			if(onLanguageSelectedListener != null)
+				onLanguageSelectedListener.onLanguageSelected(languages.get(getAdapterPosition()));
 		}
 	}
 
@@ -48,7 +60,7 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.ViewHo
 				languages = new LanguageRepository(new RepositoryImpl<Language>(databaseHelper)).all();
 				ProjectRepository projectRepository = new ProjectRepository(new RepositoryImpl<Project>(databaseHelper));
 				for (Language language : languages) {
-					repoCount.put(language, projectRepository.countProjectsOfLanguage(language.getId()));
+					projectsCount.put(language, projectRepository.countProjectsOfLanguage(language.getId()));
 				}
 				return null;
 			}
@@ -61,6 +73,10 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.ViewHo
 		}.execute();
 	}
 
+	public void setOnLanguageSelectedListener(OnLanguageSelectedListener onLanguageSelectedListener) {
+		this.onLanguageSelectedListener = onLanguageSelectedListener;
+	}
+
 	@Override
 	public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 		View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_language, parent, false);
@@ -70,7 +86,7 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.ViewHo
 	@Override
 	public void onBindViewHolder(ViewHolder holder, int position) {
 		Language language = languages.get(position);
-		holder.setData(language, repoCount.get(language));
+		holder.setData(language, projectsCount.get(language));
 	}
 
 	@Override

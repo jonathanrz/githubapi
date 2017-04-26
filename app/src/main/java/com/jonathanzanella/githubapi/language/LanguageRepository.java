@@ -18,6 +18,13 @@ public class LanguageRepository {
 		return repository.query(table, new Where(null));
 	}
 
+	public Language findById(long id) {
+		List<Language> languages = repository.query(table, new Where(Fields.ID).eq(id));
+		if(languages.size() > 0)
+			return languages.get(0);
+		return null;
+	}
+
 	public Language findByName(String name) {
 		List<Language> languages = repository.query(table, new Where(Fields.NAME).eq(name));
 		if(languages.size() > 0)

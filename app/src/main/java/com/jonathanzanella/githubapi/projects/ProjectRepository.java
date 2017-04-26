@@ -21,6 +21,10 @@ public class ProjectRepository {
 		return null;
 	}
 
+	public List<Project> projectsOfLanguage(Long languageId) {
+		return repository.query(table, new Where(Fields.LANGUAGE_ID).eq(languageId));
+	}
+
 	public long countProjectsOfLanguage(Long languageId) {
 		return repository.count(table, new Where(Fields.LANGUAGE_ID).eq(languageId));
 	}

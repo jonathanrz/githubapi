@@ -5,12 +5,7 @@
               android:layout_height="wrap_content">
 
 	<TextView
-		android:id="@+id/row_language_name"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"/>
-
-	<TextView
-		android:id="@+id/row_language_projects_count"
+		android:id="@+id/row_project_name"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"/>
 

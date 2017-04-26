@@ -1,5 +1,6 @@
 package com.jonathanzanella.githubapi;
 
+import android.content.Intent;
 import android.support.annotation.IdRes;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.rule.ActivityTestRule;
@@ -7,6 +8,7 @@ import android.support.test.rule.ActivityTestRule;
 import com.jonathanzanella.githubapi.database.DatabaseHelper;
 import com.jonathanzanella.githubapi.database.RepositoryImpl;
 import com.jonathanzanella.githubapi.language.Language;
+import com.jonathanzanella.githubapi.language.LanguageActivity;
 import com.jonathanzanella.githubapi.language.LanguageRepository;
 import com.jonathanzanella.githubapi.projects.Project;
 import com.jonathanzanella.githubapi.projects.ProjectRepository;
@@ -19,20 +21,19 @@ import java.util.List;
 
 import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withTagValue;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static com.jonathanzanella.githubapi.UIHelper.matchToolbarTitle;
+import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.core.AllOf.allOf;
 
-public class MainActivityTest {
+public class LanguageActivityTest {
 	private List<Language> languages;
+
 	@Rule
-	public ActivityTestRule<MainActivity> activityTestRule = new ActivityTestRule<>(MainActivity.class);
+	public ActivityTestRule<LanguageActivity> activityTestRule = new ActivityTestRule<>(LanguageActivity.class);
 
 	@Before
 	public void setUp() throws Exception {
@@ -40,33 +41,25 @@ public class MainActivityTest {
 	}
 
 	@Test
-	public void showSavedLanguagesOnScreen() throws Exception {
-		for (Language language : languages) {
-			onLanguageRowView(R.id.row_language_name, language)
-					.check(matches(withText(language.getName())));
+	public void showProjectsFromFirstScreen() throws Exception {
+		Language language = languages.get(0);
+
+		Intent i = new Intent();
+		i.putExtra(LanguageActivity.KEY_LANGUAGE_ID, language.getId());
+		activityTestRule.launchActivity(i);
+
+		ProjectRepository projectRepository = new ProjectRepository(new RepositoryImpl<Project>(new DatabaseHelper(getTargetContext())));
+		List<Project> projectsOfLanguage = projectRepository.projectsOfLanguage(language.getId());
+
+		for (Project project : projectsOfLanguage) {
+			onProjectRowView(R.id.row_project_name, project)
+					.check(matches(withText(project.getName())));
 		}
 	}
 
-	@Test
-	public void showRepoCountForFirstLanguage() throws Exception {
-		ProjectRepository projectRepository = new ProjectRepository(new RepositoryImpl<Project>(new DatabaseHelper(getTargetContext())));
-		Language language = languages.get(0);
-		long count = projectRepository.countProjectsOfLanguage(language.getId());
-		onLanguageRowView(R.id.row_language_projects_count, language)
-				.check(matches(withText(String.valueOf(count))));
-	}
-
-	@Test
-	public void showLanguageScreenWhenClickingIntoLanguageView() throws Exception {
-		Language language = languages.get(0);
-		onView(withTagValue(is((Object)language.getId()))).perform(click());
-
-		matchToolbarTitle(language.getName());
-	}
-
-	private ViewInteraction onLanguageRowView(@IdRes int id, Language language) {
+	private ViewInteraction onProjectRowView(@IdRes int id, Project project) {
 		return onView(allOf(
 				withId(id),
-				isDescendantOfA(withTagValue(is((Object)language.getId())))));
+				isDescendantOfA(withTagValue(is((Object)project.getId())))));
 	}
 }

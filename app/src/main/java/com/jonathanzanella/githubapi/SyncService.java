@@ -14,8 +14,12 @@ import com.jonathanzanella.githubapi.language.LanguageRepository;
 import com.jonathanzanella.githubapi.projects.Project;
 import com.jonathanzanella.githubapi.projects.ProjectRepository;
 
+import java.io.IOException;
 import java.util.List;
 
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -34,11 +38,26 @@ public class SyncService extends IntentService {
 		projectRepository = new ProjectRepository(new RepositoryImpl<Project>(databaseHelper));
 	}
 
+	private OkHttpClient buildHttpClient() {
+		return new OkHttpClient.Builder()
+				.addInterceptor(new Interceptor() {
+					@Override
+					public okhttp3.Response intercept(Chain chain) throws IOException {
+						Request request = chain.request();
+						request = request.newBuilder()
+								.addHeader("Accept", "application/vnd.github.v3+json")
+								.build();
+						return chain.proceed(request);
+					}
+				}).build();
+	}
+
 	@Override
 	protected void onHandleIntent(@Nullable Intent intent) {
 		Retrofit retrofit = new Retrofit.Builder()
 				.baseUrl("https://api.github.com/")
 				.addConverterFactory(GsonConverterFactory.create())
+				.client(buildHttpClient())
 				.build();
 
 		final GitHubService service = retrofit.create(GitHubService.class);
