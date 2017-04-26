@@ -11,23 +11,31 @@ import android.widget.TextView;
 import com.jonathanzanella.githubapi.R;
 import com.jonathanzanella.githubapi.database.DatabaseHelper;
 import com.jonathanzanella.githubapi.database.RepositoryImpl;
+import com.jonathanzanella.githubapi.repo.Repo;
+import com.jonathanzanella.githubapi.repo.RepoRepository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.ViewHolder> {
 	private List<Language> languages;
+	private Map<Language, Integer> repoCount = new HashMap<>();
 
 	static class ViewHolder extends RecyclerView.ViewHolder {
-		private TextView name;
+		private TextView nameView;
+		private TextView repoCountView;
 
 		ViewHolder(View itemView) {
 			super(itemView);
-			name = (TextView) itemView.findViewById(R.id.row_language_name);
+			nameView = (TextView) itemView.findViewById(R.id.row_language_name);
+			repoCountView = (TextView) itemView.findViewById(R.id.row_language_repo_count);
 		}
 
-		public void setData(Language language) {
+		void setData(Language language, int repoCount) {
 			itemView.setTag(language.getId());
-			name.setText(language.getName());
+			nameView.setText(language.getName());
+			repoCountView.setText(String.valueOf(repoCount));
 		}
 	}
 
@@ -36,7 +44,12 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.ViewHo
 
 			@Override
 			protected Void doInBackground(Void... voids) {
-				languages = new LanguageRepository(new RepositoryImpl<Language>(new DatabaseHelper(context))).all();
+				DatabaseHelper databaseHelper = new DatabaseHelper(context);
+				languages = new LanguageRepository(new RepositoryImpl<Language>(databaseHelper)).all();
+				RepoRepository repoRepository = new RepoRepository(new RepositoryImpl<Repo>(databaseHelper));
+				for (Language language : languages) {
+					repoCount.put(language, repoRepository.reposOfLanguage(language.getId()).size());
+				}
 				return null;
 			}
 
@@ -56,7 +69,8 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.ViewHo
 
 	@Override
 	public void onBindViewHolder(ViewHolder holder, int position) {
-		holder.setData(languages.get(position));
+		Language language = languages.get(position);
+		holder.setData(language, repoCount.get(language));
 	}
 
 	@Override
