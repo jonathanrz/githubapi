@@ -29,7 +29,7 @@ public class RepositoryImpl<T extends Model> implements Repository<T> {
 				select.getParameters(),
 				null,
 				null,
-				where.orderBy().toString());
+				where.orderBy());
 
 		try {
 			List<T> sources = new ArrayList<>();

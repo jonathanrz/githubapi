@@ -35,7 +35,7 @@ public class WhereTest {
 	@Test
 	public void generate_query_with_order_by() throws Exception {
 		Where where = new Where(Fields.ID).eq(1L).orderBy(Fields.ID);
-		assertThat(where.orderBy(), is(Fields.ID));
+		assertThat(where.orderBy(), is(Fields.ID.toString()));
 	}
 
 	@Test(expected = UnsupportedOperationException.class)

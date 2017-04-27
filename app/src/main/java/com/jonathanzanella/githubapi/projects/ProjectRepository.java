@@ -22,7 +22,7 @@ public class ProjectRepository {
 	}
 
 	public List<Project> projectsOfLanguage(Long languageId) {
-		return repository.query(table, new Where(Fields.LANGUAGE_ID).eq(languageId));
+		return repository.query(table, new Where(Fields.LANGUAGE_ID).eq(languageId).orderByDesc(Fields.OPEN_ISSUES));
 	}
 
 	public long countProjectsOfLanguage(Long languageId) {

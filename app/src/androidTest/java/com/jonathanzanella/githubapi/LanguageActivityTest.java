@@ -19,6 +19,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import static android.support.test.InstrumentationRegistry.getTargetContext;
@@ -28,6 +30,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withTagValue;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static com.jonathanzanella.githubapi.UIHelper.atPosition;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
@@ -64,6 +67,28 @@ public class LanguageActivityTest {
 			onProjectRowView(R.id.row_project_open_issues, project)
 					.check(matches(withText(String.valueOf(project.getOpenIssues()))));
 		}
+	}
+
+	@Test
+	public void showProjectsInOrderByOpenIssues() {
+		Language language = languages.get(0);
+
+		Intent i = new Intent();
+		i.putExtra(LanguageActivity.KEY_LANGUAGE_ID, language.getId());
+		activityTestRule.launchActivity(i);
+
+		ProjectRepository projectRepository = new ProjectRepository(new RepositoryImpl<Project>(new DatabaseHelper(getTargetContext())));
+		List<Project> projectsOfLanguage = projectRepository.projectsOfLanguage(language.getId());
+
+		Collections.sort(projectsOfLanguage, new Comparator<Project>() {
+			@Override
+			public int compare(Project project1, Project project2) {
+				return project2.getOpenIssues() - project1.getOpenIssues();
+			}
+		});
+
+		onView(withId(R.id.act_language_project_list))
+				.check(matches(atPosition(0, withTagValue(is((Object)projectsOfLanguage.get(0).getId())))));
 	}
 
 	private ViewInteraction onProjectRowView(@IdRes int id, Project project) {

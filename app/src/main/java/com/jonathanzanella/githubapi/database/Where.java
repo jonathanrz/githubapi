@@ -23,7 +23,7 @@ public class Where {
 
 	private List<Query> queries = new ArrayList<>();
 	private List<String> values = new ArrayList<>();
-	private Fields orderBy = Fields.ID;
+	private String orderBy = Fields.ID.toString();
 
 	public Where(Fields field) {
 		if(field != null)
@@ -106,11 +106,16 @@ public class Where {
 	}
 
 	public Where orderBy(Fields field) {
-		orderBy = field;
+		orderBy = field.toString();
 		return this;
 	}
 
-	public Fields orderBy() {
+	public Where orderByDesc(Fields field) {
+		orderBy = field.toString() + " desc";
+		return this;
+	}
+
+	public String orderBy() {
 		return orderBy;
 	}
 
