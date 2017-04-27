@@ -11,6 +11,8 @@ import com.jonathanzanella.githubapi.projects.ProjectRepository;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
+import org.joda.time.DateTime;
+
 public class TestApplication extends Application {
 	@Override
 	public void onCreate() {
@@ -26,25 +28,42 @@ public class TestApplication extends Application {
 		DatabaseHelper databaseHelper = new DatabaseHelper(this);
 
 		LanguageRepository languageRepository = new LanguageRepository(new RepositoryImpl<Language>(databaseHelper));
+		ProjectRepository projectRepository = new ProjectRepository(new RepositoryImpl<Project>(databaseHelper));
+
+		generatePythonData(languageRepository, projectRepository);
+		generateJavaData(languageRepository, projectRepository);
+	}
+
+	private void generatePythonData(LanguageRepository languageRepository, ProjectRepository projectRepository) {
 		Language python = new Language();
 		python.setName("Python");
 		languageRepository.save(python);
+
+		Project python1 = buildProject("Python1", 2);
+		python1.setLanguageId(python.getId());
+		projectRepository.save(python1);
+
+		Project python2 = buildProject("Python2", 3);
+		python2.setLanguageId(python.getId());
+		projectRepository.save(python2);
+	}
+
+	private void generateJavaData(LanguageRepository languageRepository, ProjectRepository projectRepository) {
 		Language java = new Language();
 		java.setName("Java");
 		languageRepository.save(java);
 
-		ProjectRepository projectRepository = new ProjectRepository(new RepositoryImpl<Project>(databaseHelper));
-		Project python1 = new Project();
-		python1.setName("Python1");
-		python1.setLanguageId(python.getId());
-		projectRepository.save(python1);
-		Project python2 = new Project();
-		python2.setName("Python2");
-		python1.setLanguageId(python.getId());
-		projectRepository.save(python2);
-		Project java1 = new Project();
-		java1.setName("Java1");
+		Project java1 = buildProject("Java1", 3);
 		java1.setLanguageId(java.getId());
 		projectRepository.save(java1);
+	}
+
+	private Project buildProject(String name, int openIssues) {
+		Project project = new Project();
+		project.setName(name);
+		project.setCreatedAt(new DateTime(2017, 4, 27, 21, 50, 0));
+		project.setUpdatedAt(new DateTime(2017, 4, 27, 22, 50, 0));
+		project.setOpenIssues(openIssues);
+		return project;
 	}
 }

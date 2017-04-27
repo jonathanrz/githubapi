@@ -12,22 +12,35 @@ import com.jonathanzanella.githubapi.database.DatabaseHelper;
 import com.jonathanzanella.githubapi.database.RepositoryImpl;
 import com.jonathanzanella.githubapi.language.Language;
 
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import java.util.List;
 
 public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHolder> {
+	private static final DateTimeFormatter DATE_FORMAT = DateTimeFormat.forPattern(Project.DATE_FORMAT);
 	private List<Project> projects;
 
 	static class ViewHolder extends RecyclerView.ViewHolder {
 		private TextView viewName;
+		private TextView viewCreatedAt;
+		private TextView viewUpdatedAt;
+		private TextView viewOpenIssues;
 
 		ViewHolder(View itemView) {
 			super(itemView);
 			viewName = (TextView) itemView.findViewById(R.id.row_project_name);
+			viewCreatedAt = (TextView) itemView.findViewById(R.id.row_project_created_at);
+			viewUpdatedAt = (TextView) itemView.findViewById(R.id.row_project_updated_at);
+			viewOpenIssues = (TextView) itemView.findViewById(R.id.row_project_open_issues);
 		}
 
 		public void setData(Project project) {
 			itemView.setTag(project.getId());
 			viewName.setText(project.getName());
+			viewCreatedAt.setText(DATE_FORMAT.print(project.getCreatedAt()));
+			viewUpdatedAt.setText(DATE_FORMAT.print(project.getUpdatedAt()));
+			viewOpenIssues.setText(String.valueOf(project.getOpenIssues()));
 		}
 	}
 

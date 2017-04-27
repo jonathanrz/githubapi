@@ -5,6 +5,7 @@ import com.jonathanzanella.githubapi.Model;
 import org.joda.time.DateTime;
 
 public class Project implements Model {
+	public static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 	private long id;
 	private String name;
 	private long languageId;

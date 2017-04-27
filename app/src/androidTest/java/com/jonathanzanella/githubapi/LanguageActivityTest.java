@@ -13,6 +13,8 @@ import com.jonathanzanella.githubapi.language.LanguageRepository;
 import com.jonathanzanella.githubapi.projects.Project;
 import com.jonathanzanella.githubapi.projects.ProjectRepository;
 
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -30,6 +32,7 @@ import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
 public class LanguageActivityTest {
+	private static final DateTimeFormatter DATE_FORMAT = DateTimeFormat.forPattern(Project.DATE_FORMAT);
 	private List<Language> languages;
 
 	@Rule
@@ -54,6 +57,12 @@ public class LanguageActivityTest {
 		for (Project project : projectsOfLanguage) {
 			onProjectRowView(R.id.row_project_name, project)
 					.check(matches(withText(project.getName())));
+			onProjectRowView(R.id.row_project_created_at, project)
+					.check(matches(withText(DATE_FORMAT.print(project.getCreatedAt()))));
+			onProjectRowView(R.id.row_project_updated_at, project)
+					.check(matches(withText(DATE_FORMAT.print(project.getUpdatedAt()))));
+			onProjectRowView(R.id.row_project_open_issues, project)
+					.check(matches(withText(String.valueOf(project.getOpenIssues()))));
 		}
 	}
 
