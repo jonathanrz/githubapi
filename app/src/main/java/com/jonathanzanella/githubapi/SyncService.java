@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.google.gson.GsonBuilder;
 import com.jonathanzanella.githubapi.database.DatabaseHelper;
 import com.jonathanzanella.githubapi.database.RepositoryImpl;
 import com.jonathanzanella.githubapi.github.GitHubService;
@@ -13,6 +14,8 @@ import com.jonathanzanella.githubapi.language.Language;
 import com.jonathanzanella.githubapi.language.LanguageRepository;
 import com.jonathanzanella.githubapi.projects.Project;
 import com.jonathanzanella.githubapi.projects.ProjectRepository;
+
+import org.joda.time.DateTime;
 
 import java.io.IOException;
 import java.util.List;
@@ -54,9 +57,12 @@ public class SyncService extends IntentService {
 
 	@Override
 	protected void onHandleIntent(@Nullable Intent intent) {
+		final GsonBuilder builder = new GsonBuilder()
+				.registerTypeAdapter(DateTime.class, new DateTimeDeserializer());
+
 		Retrofit retrofit = new Retrofit.Builder()
 				.baseUrl("https://api.github.com/")
-				.addConverterFactory(GsonConverterFactory.create())
+				.addConverterFactory(GsonConverterFactory.create(builder.create()))
 				.client(buildHttpClient())
 				.build();
 
@@ -75,6 +81,9 @@ public class SyncService extends IntentService {
 					if(project == null) {
 						project = new Project();
 						project.setName(githubRepository.getName());
+						project.setCreatedAt(githubRepository.getCreatedAt());
+						project.setUpdatedAt(githubRepository.getUpdatedAt());
+						project.setOpenIssues(githubRepository.getOpenIssues());
 						project.setLanguageId(language.getId());
 						projectRepository.save(project);
 					}

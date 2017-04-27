@@ -3,7 +3,10 @@ package com.jonathanzanella.githubapi.database;
 public enum Fields {
 	ID("id"),
 	NAME("name"),
-	LANGUAGE_ID("languageId");
+	LANGUAGE_ID("languageId"),
+	CREATED_AT("createdAt"),
+	UPDATED_AT("updatedAt"),
+	OPEN_ISSUES("openIssues");
 
 	private String fieldName;
 

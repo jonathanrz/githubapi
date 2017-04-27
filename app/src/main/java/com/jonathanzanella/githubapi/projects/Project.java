@@ -2,11 +2,15 @@ package com.jonathanzanella.githubapi.projects;
 
 import com.jonathanzanella.githubapi.Model;
 
+import org.joda.time.DateTime;
+
 public class Project implements Model {
 	private long id;
 	private String name;
 	private long languageId;
-
+	private DateTime createdAt;
+	private DateTime updatedAt;
+	private int openIssues;
 
 	@Override
 	public Long getId() {
@@ -32,5 +36,29 @@ public class Project implements Model {
 
 	public void setLanguageId(long languageId) {
 		this.languageId = languageId;
+	}
+
+	public DateTime getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(DateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public DateTime getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(DateTime updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+
+	public int getOpenIssues() {
+		return openIssues;
+	}
+
+	public void setOpenIssues(int openIssues) {
+		this.openIssues = openIssues;
 	}
 }

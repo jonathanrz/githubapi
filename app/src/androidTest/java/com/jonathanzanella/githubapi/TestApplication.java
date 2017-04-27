@@ -9,11 +9,14 @@ import com.jonathanzanella.githubapi.language.LanguageRepository;
 import com.jonathanzanella.githubapi.projects.Project;
 import com.jonathanzanella.githubapi.projects.ProjectRepository;
 
+import net.danlew.android.joda.JodaTimeAndroid;
+
 public class TestApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
 
+		JodaTimeAndroid.init(this);
 		new DatabaseHelper(this).recreateTables();
 
 		generateTestData();
