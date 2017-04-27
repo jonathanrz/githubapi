@@ -51,7 +51,11 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.ViewHo
 		}
 	}
 
-	public LanguageAdapter(final Context context) {
+	public LanguageAdapter(Context context) {
+		updateData(context);
+	}
+
+	public void updateData(final Context context) {
 		new AsyncTask<Void, Void, Void>() {
 
 			@Override

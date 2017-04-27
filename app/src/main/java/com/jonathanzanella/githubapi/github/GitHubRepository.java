@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import org.joda.time.DateTime;
 
-public class GithubRepository {
+public class GitHubRepository {
 	private String name;
 	private String language;
 	@SerializedName("created_at")
