@@ -8,7 +8,7 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -22,6 +22,7 @@ import com.jonathanzanella.githubapi.language.LanguageAdapter;
 import com.jonathanzanella.githubapi.sync.SyncService;
 
 public class MainActivity extends AppCompatActivity implements LanguageAdapter.OnLanguageSelectedListener, ServiceConnection, SyncService.DataDownloadListener {
+	private static final int LANGUAGES_COLUMNS_COUNT = 2;
 	private SyncService syncService;
 	private ProgressBar progressBar;
 	private LanguageAdapter adapter;
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements LanguageAdapter.O
 		adapter = new LanguageAdapter(this);
 		adapter.setOnLanguageSelectedListener(this);
 		recyclerView.setAdapter(adapter);
-		recyclerView.setLayoutManager(new LinearLayoutManager(this));
+		recyclerView.setLayoutManager(new GridLayoutManager(this, LANGUAGES_COLUMNS_COUNT));
 	}
 
 	private boolean syncServiceIsRunning() {

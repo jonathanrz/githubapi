@@ -84,7 +84,7 @@ public class Where {
 		return new Select(query.toString(), values.toArray(new String[0]));
 	}
 
-	Where orderBy(Fields field) {
+	public Where orderBy(Fields field) {
 		orderBy = field.toString();
 		return this;
 	}

@@ -15,7 +15,7 @@ public class LanguageRepository {
 	}
 
 	public List<Language> all() {
-		return repository.query(table, new Where(null));
+		return repository.query(table, new Where(null).orderBy(Fields.NAME));
 	}
 
 	Language findById(long id) {

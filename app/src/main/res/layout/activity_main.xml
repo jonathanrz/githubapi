@@ -13,6 +13,7 @@
 		android:id="@+id/act_main_progress_bar"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:layout_marginTop="-4dp"
 		style="?android:attr/progressBarStyleHorizontal"
 		android:indeterminate="true"
 		android:visibility="gone"/>
