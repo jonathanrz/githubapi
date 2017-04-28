@@ -1,27 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content">
+	style="@style/RowLayout"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content">
 
 	<TextView
+		style="@style/PrimaryText"
 		android:id="@+id/row_project_name"
 		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"/>
+		android:layout_height="wrap_content"
+		android:textSize="20sp"/>
 
-	<TextView
-		android:id="@+id/row_project_created_at"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"/>
+	<TableLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="5dp">
 
-	<TextView
-		android:id="@+id/row_project_updated_at"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"/>
+		<TableRow>
+			<TextView
+				style="@style/Static"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="bottom|end"
+				android:text="@string/created_at"/>
 
-	<TextView
-		android:id="@+id/row_project_open_issues"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"/>
+			<TextView
+				style="@style/SecondaryText"
+				android:id="@+id/row_project_created_at"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="5dp"/>
+		</TableRow>
+
+		<TableRow>
+			<TextView
+				style="@style/Static"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="bottom|end"
+				android:text="@string/updated_at"/>
+
+			<TextView
+				style="@style/SecondaryText"
+				android:id="@+id/row_project_updated_at"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="5dp"/>
+		</TableRow>
+
+		<TableRow>
+			<TextView
+				style="@style/Static"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="bottom|end"
+				android:text="@string/number_of_issues"/>
+
+			<TextView
+				style="@style/SecondaryText"
+				android:id="@+id/row_project_open_issues"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="5dp"/>
+		</TableRow>
+
+	</TableLayout>
 
 </LinearLayout>

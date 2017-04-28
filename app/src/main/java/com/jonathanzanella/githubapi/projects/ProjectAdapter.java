@@ -1,6 +1,7 @@
 package com.jonathanzanella.githubapi.projects;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import com.jonathanzanella.githubapi.R;
 import com.jonathanzanella.githubapi.database.DatabaseHelper;
 import com.jonathanzanella.githubapi.database.RepositoryImpl;
+import com.jonathanzanella.githubapi.helper.AdapterColorHelper;
 import com.jonathanzanella.githubapi.language.Language;
 
 import org.joda.time.format.DateTimeFormat;
@@ -18,10 +20,11 @@ import org.joda.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHolder> {
-	private static final DateTimeFormatter DATE_FORMAT = DateTimeFormat.forPattern(Project.DATE_FORMAT);
+	private static final DateTimeFormatter DATE_FORMAT = DateTimeFormat.forPattern("dd/MM/yy HH:mm:ss");
 	private List<Project> projects;
 
 	static class ViewHolder extends RecyclerView.ViewHolder {
+		private final AdapterColorHelper adapterColorHelper;
 		private TextView viewName;
 		private TextView viewCreatedAt;
 		private TextView viewUpdatedAt;
@@ -33,10 +36,16 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHold
 			viewCreatedAt = (TextView) itemView.findViewById(R.id.row_project_created_at);
 			viewUpdatedAt = (TextView) itemView.findViewById(R.id.row_project_updated_at);
 			viewOpenIssues = (TextView) itemView.findViewById(R.id.row_project_open_issues);
+
+			int colorListEven = ContextCompat.getColor(itemView.getContext(), R.color.colorListEven);
+			int colorListOdd = ContextCompat.getColor(itemView.getContext(), R.color.colorListOdd);
+
+			adapterColorHelper = new AdapterColorHelper(colorListOdd, colorListEven);
 		}
 
 		public void setData(Project project) {
 			itemView.setTag(project.getId());
+			itemView.setBackgroundColor(adapterColorHelper.getColorForLinearLayout(getAdapterPosition()));
 			viewName.setText(project.getName());
 			viewCreatedAt.setText(DATE_FORMAT.print(project.getCreatedAt()));
 			viewUpdatedAt.setText(DATE_FORMAT.print(project.getUpdatedAt()));

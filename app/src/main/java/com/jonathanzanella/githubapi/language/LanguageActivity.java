@@ -37,7 +37,7 @@ public class LanguageActivity extends AppCompatActivity {
 		toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 		displayHomeAsUp();
-		setTitle(language.getName());
+		setTitle(getString(R.string.main_activity_language) + " " + language.getName());
 
 		projectsList = (RecyclerView) findViewById(R.id.act_language_project_list);
 		projectsList.setAdapter(new ProjectAdapter(this, language));

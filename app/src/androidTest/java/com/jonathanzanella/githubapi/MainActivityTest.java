@@ -61,7 +61,7 @@ public class MainActivityTest {
 		Language language = languages.get(0);
 		onView(withTagValue(is((Object)language.getId()))).perform(click());
 
-		matchToolbarTitle(language.getName());
+		matchToolbarTitle(getTargetContext().getString(R.string.main_activity_language) + " " + language.getName());
 	}
 
 	private ViewInteraction onLanguageRowView(@IdRes int id, Language language) {
