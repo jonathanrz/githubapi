@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.jonathanzanella.githubapi.language.Language;
 import com.jonathanzanella.githubapi.language.LanguageActivity;
 import com.jonathanzanella.githubapi.language.LanguageAdapter;
+import com.jonathanzanella.githubapi.sync.SyncService;
 
 public class MainActivity extends AppCompatActivity implements LanguageAdapter.OnLanguageSelectedListener, ServiceConnection, SyncService.DataDownloadListener {
 	private SyncService syncService;

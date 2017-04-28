@@ -6,7 +6,8 @@ public enum Fields {
 	LANGUAGE_ID("languageId"),
 	CREATED_AT("createdAt"),
 	UPDATED_AT("updatedAt"),
-	OPEN_ISSUES("openIssues");
+	OPEN_ISSUES("openIssues"),
+	VALID("valid");
 
 	private String fieldName;
 

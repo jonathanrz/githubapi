@@ -14,6 +14,10 @@ public class ProjectRepository {
 		this.repository = repository;
 	}
 
+	public List<Project> all() {
+		return repository.query(table, new Where(null));
+	}
+
 	public Project findByName(String name) {
 		List<Project> projects = repository.query(table, new Where(Fields.NAME).eq(name));
 		if(projects.size() > 0)
@@ -27,6 +31,10 @@ public class ProjectRepository {
 
 	public long countProjectsOfLanguage(Long languageId) {
 		return repository.count(table, new Where(Fields.LANGUAGE_ID).eq(languageId));
+	}
+
+	public void deleteInvalid() {
+		repository.delete(table, new Where(Fields.VALID).eq(false));
 	}
 
 	public void save(Project project) {

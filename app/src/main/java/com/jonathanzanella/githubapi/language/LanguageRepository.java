@@ -32,6 +32,10 @@ public class LanguageRepository {
 		return null;
 	}
 
+	public void deleteInvalid() {
+		repository.delete(table, new Where(Fields.VALID).eq(false));
+	}
+
 	public void save(Language language) {
 		repository.save(table, language);
 	}

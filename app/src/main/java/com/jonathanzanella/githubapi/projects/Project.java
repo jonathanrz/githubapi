@@ -12,6 +12,7 @@ public class Project implements Model {
 	private DateTime createdAt;
 	private DateTime updatedAt;
 	private int openIssues;
+	private boolean valid = true;
 
 	@Override
 	public Long getId() {
@@ -23,6 +24,7 @@ public class Project implements Model {
 		this.id = id;
 	}
 
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -61,5 +63,14 @@ public class Project implements Model {
 
 	public void setOpenIssues(int openIssues) {
 		this.openIssues = openIssues;
+	}
+
+	@Override
+	public boolean isValid() {
+		return valid;
+	}
+
+	public void setValid(boolean valid) {
+		this.valid = valid;
 	}
 }

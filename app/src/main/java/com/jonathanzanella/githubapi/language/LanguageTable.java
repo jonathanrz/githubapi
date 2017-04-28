@@ -8,6 +8,7 @@ import com.jonathanzanella.githubapi.database.Fields;
 import com.jonathanzanella.githubapi.database.SqlTypes;
 import com.jonathanzanella.githubapi.database.Table;
 
+import static com.jonathanzanella.githubapi.database.CursorHelper.getBoolean;
 import static com.jonathanzanella.githubapi.database.CursorHelper.getLong;
 import static com.jonathanzanella.githubapi.database.CursorHelper.getString;
 
@@ -21,7 +22,8 @@ public class LanguageTable implements Table<Language> {
 	public String [] getProjection() {
 		return new String[] {
 				Fields.ID.toString(),
-				Fields.NAME.toString()
+				Fields.NAME.toString(),
+				Fields.VALID.toString()
 		};
 	}
 
@@ -33,7 +35,8 @@ public class LanguageTable implements Table<Language> {
 	private String createTableSql() {
 		return "CREATE TABLE " + getName() + " (" +
 				Fields.ID + SqlTypes.PRIMARY_KEY + "," +
-				Fields.NAME + SqlTypes.TEXT_UNIQUE_NOT_NULL + " )";
+				Fields.NAME + SqlTypes.TEXT_UNIQUE_NOT_NULL + "," +
+				Fields.VALID + SqlTypes.INT_NOT_NULL + " )";
 	}
 
 	@Override
@@ -52,6 +55,7 @@ public class LanguageTable implements Table<Language> {
 	public ContentValues fillContentValues(Language language) {
 		ContentValues values = new ContentValues();
 		values.put(Fields.NAME.toString(), language.getName());
+		values.put(Fields.VALID.toString(), language.isValid());
 		return values;
 	}
 
@@ -60,6 +64,7 @@ public class LanguageTable implements Table<Language> {
 		Language language = new Language();
 		language.setId(getLong(c, Fields.ID));
 		language.setName(getString(c, Fields.NAME));
+		language.setValid(getBoolean(c, Fields.VALID));
 		return language;
 	}
 }

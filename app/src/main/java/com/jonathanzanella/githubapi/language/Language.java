@@ -5,6 +5,7 @@ import com.jonathanzanella.githubapi.Model;
 public class Language implements Model {
 	private long id;
 	private String name;
+	private boolean valid = true;
 
 	@Override
 	public Long getId() {
@@ -16,6 +17,7 @@ public class Language implements Model {
 		this.id = id;
 	}
 
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -24,5 +26,12 @@ public class Language implements Model {
 		this.name = name;
 	}
 
+	@Override
+	public boolean isValid() {
+		return valid;
+	}
 
+	public void setValid(boolean valid) {
+		this.valid = valid;
+	}
 }

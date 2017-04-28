@@ -12,7 +12,7 @@ import org.joda.time.format.DateTimeFormatter;
 
 import java.lang.reflect.Type;
 
-class DateTimeDeserializer implements JsonDeserializer<DateTime> {
+public class DateTimeDeserializer implements JsonDeserializer<DateTime> {
 	private static final DateTimeFormatter DATE_FORMAT = DateTimeFormat.forPattern(Project.DATE_FORMAT);
 
 	@Override

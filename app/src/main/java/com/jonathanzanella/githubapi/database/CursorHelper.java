@@ -15,6 +15,10 @@ public final class CursorHelper {
 		return c.getInt(c.getColumnIndexOrThrow(field.toString()));
 	}
 
+	public static boolean getBoolean(Cursor c, Fields field) {
+		return c.getInt(c.getColumnIndexOrThrow(field.toString())) != 0;
+	}
+
 	public static String getString(Cursor c, Fields field) {
 		return c.getString(c.getColumnIndexOrThrow(field.toString()));
 	}

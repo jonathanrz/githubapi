@@ -1,4 +1,4 @@
-package com.jonathanzanella.githubapi;
+package com.jonathanzanella.githubapi.sync;
 
 import android.app.Service;
 import android.content.Intent;
@@ -8,10 +8,11 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.google.gson.GsonBuilder;
+import com.jonathanzanella.githubapi.DateTimeDeserializer;
 import com.jonathanzanella.githubapi.database.DatabaseHelper;
 import com.jonathanzanella.githubapi.database.RepositoryImpl;
-import com.jonathanzanella.githubapi.github.GitHubService;
 import com.jonathanzanella.githubapi.github.GitHubRepository;
+import com.jonathanzanella.githubapi.github.GitHubService;
 import com.jonathanzanella.githubapi.language.Language;
 import com.jonathanzanella.githubapi.language.LanguageRepository;
 import com.jonathanzanella.githubapi.projects.Project;
@@ -32,27 +33,29 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SyncService extends Service {
-	class SyncServiceBinder extends Binder {
-		SyncService getService() {
+
+	public static final String GITHUB_USER = "BearchInc";
+
+	public class SyncServiceBinder extends Binder {
+		public SyncService getService() {
 			return SyncService.this;
 		}
 	}
 
-	interface DataDownloadListener {
+	public interface DataDownloadListener {
 		void onDataDownloaded();
 		void onErrorDownloadingData();
 	}
 
 	private final IBinder binder = new SyncServiceBinder();
-	private LanguageRepository languageRepository;
-	private ProjectRepository projectRepository;
 	private boolean downloadingData;
 	private DataDownloadListener listener;
+	private SyncData syncData;
 
 	public SyncService() {
 		DatabaseHelper databaseHelper = new DatabaseHelper(this);
-		languageRepository = new LanguageRepository(new RepositoryImpl<Language>(databaseHelper));
-		projectRepository = new ProjectRepository(new RepositoryImpl<Project>(databaseHelper));
+		syncData = new SyncData(new LanguageRepository(new RepositoryImpl<Language>(databaseHelper)),
+				new ProjectRepository(new RepositoryImpl<Project>(databaseHelper)));
 	}
 
 	public boolean isDownloadingData() {
@@ -91,37 +94,13 @@ public class SyncService extends Service {
 
 	protected void downloadGitHubData() {
 		downloadingData = true;
-		final GsonBuilder builder = new GsonBuilder()
-				.registerTypeAdapter(DateTime.class, new DateTimeDeserializer());
 
-		Retrofit retrofit = new Retrofit.Builder()
-				.baseUrl("https://api.github.com/")
-				.addConverterFactory(GsonConverterFactory.create(builder.create()))
-				.client(buildHttpClient())
-				.build();
-
-		final GitHubService service = retrofit.create(GitHubService.class);
-		service.listGitHubRepositories("BearchInc").enqueue(new Callback<List<GitHubRepository>>() {
+		final GitHubService service = buildRetrofitClient().create(GitHubService.class);
+		service.listGitHubRepositories(GITHUB_USER).enqueue(new Callback<List<GitHubRepository>>() {
 			@Override
 			public void onResponse(Call<List<GitHubRepository>> call, Response<List<GitHubRepository>> response) {
-				for (final GitHubRepository gitHubRepository : response.body()) {
-					Language language = languageRepository.findByName(gitHubRepository.getLanguage());
-					if(language == null) {
-						language = new Language();
-						language.setName(gitHubRepository.getLanguage());
-						languageRepository.save(language);
-					}
-					Project project = projectRepository.findByName(gitHubRepository.getName());
-					if(project == null) {
-						project = new Project();
-						project.setName(gitHubRepository.getName());
-						project.setCreatedAt(gitHubRepository.getCreatedAt());
-						project.setUpdatedAt(gitHubRepository.getUpdatedAt());
-						project.setOpenIssues(gitHubRepository.getOpenIssues());
-						project.setLanguageId(language.getId());
-						projectRepository.save(project);
-					}
-				}
+				syncData.syncData(response.body());
+
 				downloadingData = false;
 				if(listener != null)
 					listener.onDataDownloaded();
@@ -135,5 +114,16 @@ public class SyncService extends Service {
 					listener.onErrorDownloadingData();
 			}
 		});
+	}
+
+	private Retrofit buildRetrofitClient() {
+		final GsonBuilder builder = new GsonBuilder()
+				.registerTypeAdapter(DateTime.class, new DateTimeDeserializer());
+
+		return new Retrofit.Builder()
+				.baseUrl("https://api.github.com/")
+				.addConverterFactory(GsonConverterFactory.create(builder.create()))
+				.client(buildHttpClient())
+				.build();
 	}
 }

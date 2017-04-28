@@ -2,7 +2,7 @@ package com.jonathanzanella.githubapi.database;
 
 import java.util.Arrays;
 
-class Select {
+public class Select {
 	private String where;
 	private String [] parameters;
 
@@ -11,11 +11,11 @@ class Select {
 		this.parameters = parameters;
 	}
 
-	String getWhere() {
+	public String getWhere() {
 		return where;
 	}
 
-	String[] getParameters() {
+	public String[] getParameters() {
 		return parameters;
 	}
 

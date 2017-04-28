@@ -28,11 +28,23 @@ public class GitHubRepository {
 		return createdAt;
 	}
 
+	public void setCreatedAt(DateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
 	public DateTime getUpdatedAt() {
 		return updatedAt;
 	}
 
 	public int getOpenIssues() {
 		return openIssues;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setLanguage(String language) {
+		this.language = language;
 	}
 }

@@ -5,6 +5,7 @@ import android.content.Intent;
 
 import com.facebook.stetho.Stetho;
 import com.jonathanzanella.githubapi.database.DatabaseHelper;
+import com.jonathanzanella.githubapi.sync.SyncService;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 

@@ -54,6 +54,13 @@ public class RepositoryImpl<T extends Model> implements Repository<T> {
 	}
 
 	@Override
+	public void delete(Table<T> table, Where where) {
+		SQLiteDatabase db = databaseHelper.getWritableDatabase();
+		Select select = where.query();
+		db.delete(table.getName(), select.getWhere(), select.getParameters());
+	}
+
+	@Override
 	public void save(Table<T> table, T data) {
 		SQLiteDatabase db = databaseHelper.getWritableDatabase();
 		if (data.getId() == 0L) {

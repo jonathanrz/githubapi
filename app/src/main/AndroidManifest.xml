@@ -21,7 +21,7 @@
 		</activity>
 
 		<service
-			android:name=".SyncService"
+			android:name=".sync.SyncService"
 			android:exported="false"/>
 
 		<activity android:name=".language.LanguageActivity">
