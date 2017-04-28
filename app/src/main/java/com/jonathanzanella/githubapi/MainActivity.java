@@ -63,8 +63,7 @@ public class MainActivity extends AppCompatActivity implements LanguageAdapter.O
 	@Override
 	protected void onStop() {
 		super.onStop();
-		if(syncService != null)
-			unbindService(this);
+		unbindSyncService();
 	}
 
 	@Override
@@ -88,8 +87,7 @@ public class MainActivity extends AppCompatActivity implements LanguageAdapter.O
 	@Override
 	public void onServiceDisconnected(ComponentName componentName) {
 		Log.d(getClass().getSimpleName(), "onServiceDisconnected");
-		syncService.setDataDownloadListener(null);
-		syncService = null;
+		unbindSyncService();
 	}
 
 	@Override
@@ -97,10 +95,20 @@ public class MainActivity extends AppCompatActivity implements LanguageAdapter.O
 		adapter.updateData(this);
 		Toast.makeText(this, R.string.date_updated, Toast.LENGTH_SHORT).show();
 		progressBar.setVisibility(View.GONE);
+
+		unbindSyncService();
 	}
 
 	@Override
 	public void onErrorDownloadingData() {
 		Toast.makeText(this, R.string.error_updating_date, Toast.LENGTH_SHORT).show();
+	}
+
+	private void unbindSyncService() {
+		if(syncService != null) {
+			syncService.setDataDownloadListener(null);
+			unbindService(this);
+			syncService = null;
+		}
 	}
 }
