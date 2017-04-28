@@ -10,9 +10,10 @@ import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.jonathanzanella.githubapi.language.Language;
@@ -22,7 +23,7 @@ import com.jonathanzanella.githubapi.sync.SyncService;
 
 public class MainActivity extends AppCompatActivity implements LanguageAdapter.OnLanguageSelectedListener, ServiceConnection, SyncService.DataDownloadListener {
 	private SyncService syncService;
-	private TextView viewUpdateDataMessage;
+	private ProgressBar progressBar;
 	private LanguageAdapter adapter;
 
 	@Override
@@ -36,7 +37,11 @@ public class MainActivity extends AppCompatActivity implements LanguageAdapter.O
 		}
 
 		RecyclerView recyclerView = (RecyclerView) findViewById(R.id.act_main_language_list);
-		viewUpdateDataMessage = (TextView) findViewById(R.id.act_main_updating_data_message);
+		progressBar = (ProgressBar) findViewById(R.id.act_main_progress_bar);
+
+		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+		setSupportActionBar(toolbar);
+		setTitle(R.string.main_activity_title);
 
 		adapter = new LanguageAdapter(this);
 		adapter.setOnLanguageSelectedListener(this);
@@ -76,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements LanguageAdapter.O
 		syncService.setDataDownloadListener(this);
 
 		if(syncService.isDownloadingData())
-			viewUpdateDataMessage.setVisibility(View.VISIBLE);
+			progressBar.setVisibility(View.VISIBLE);
 	}
 
 	@Override
@@ -90,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements LanguageAdapter.O
 	public void onDataDownloaded() {
 		adapter.updateData(this);
 		Toast.makeText(this, R.string.date_updated, Toast.LENGTH_SHORT).show();
-		viewUpdateDataMessage.setVisibility(View.GONE);
+		progressBar.setVisibility(View.GONE);
 	}
 
 	@Override
