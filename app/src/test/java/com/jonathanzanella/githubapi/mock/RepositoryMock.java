@@ -1,6 +1,6 @@
 package com.jonathanzanella.githubapi.mock;
 
-import com.jonathanzanella.githubapi.Model;
+import com.jonathanzanella.githubapi.database.Model;
 import com.jonathanzanella.githubapi.database.Fields;
 import com.jonathanzanella.githubapi.database.Repository;
 import com.jonathanzanella.githubapi.database.Select;

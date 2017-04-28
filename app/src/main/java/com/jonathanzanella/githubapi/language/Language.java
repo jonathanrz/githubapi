@@ -1,6 +1,6 @@
 package com.jonathanzanella.githubapi.language;
 
-import com.jonathanzanella.githubapi.Model;
+import com.jonathanzanella.githubapi.database.Model;
 
 public class Language implements Model {
 	private long id;

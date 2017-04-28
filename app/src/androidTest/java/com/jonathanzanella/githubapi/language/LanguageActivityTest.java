@@ -1,15 +1,13 @@
-package com.jonathanzanella.githubapi;
+package com.jonathanzanella.githubapi.language;
 
 import android.content.Intent;
 import android.support.annotation.IdRes;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.rule.ActivityTestRule;
 
+import com.jonathanzanella.githubapi.R;
 import com.jonathanzanella.githubapi.database.DatabaseHelper;
 import com.jonathanzanella.githubapi.database.RepositoryImpl;
-import com.jonathanzanella.githubapi.language.Language;
-import com.jonathanzanella.githubapi.language.LanguageActivity;
-import com.jonathanzanella.githubapi.language.LanguageRepository;
 import com.jonathanzanella.githubapi.projects.Project;
 import com.jonathanzanella.githubapi.projects.ProjectRepository;
 
@@ -30,7 +28,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withTagValue;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static com.jonathanzanella.githubapi.UIHelper.atPosition;
+import static com.jonathanzanella.githubapi.helper.UIHelper.atPosition;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
@@ -47,7 +45,7 @@ public class LanguageActivityTest {
 	}
 
 	@Test
-	public void showProjectsFromFirstScreen() throws Exception {
+	public void showProjectsFromFirstLanguage() throws Exception {
 		Language language = languages.get(0);
 
 		Intent i = new Intent();

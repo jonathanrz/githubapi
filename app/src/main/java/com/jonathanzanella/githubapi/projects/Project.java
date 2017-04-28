@@ -1,6 +1,6 @@
 package com.jonathanzanella.githubapi.projects;
 
-import com.jonathanzanella.githubapi.Model;
+import com.jonathanzanella.githubapi.database.Model;
 
 import org.joda.time.DateTime;
 

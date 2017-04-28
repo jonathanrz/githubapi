@@ -19,10 +19,6 @@ import java.util.List;
 import java.util.Map;
 
 public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.ViewHolder> {
-	private List<Language> languages;
-	private Map<Language, Long> projectsCount = new HashMap<>();
-	private OnLanguageSelectedListener onLanguageSelectedListener;
-
 	public interface OnLanguageSelectedListener {
 		void onLanguageSelected(Language language);
 	}
@@ -50,6 +46,10 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.ViewHo
 				onLanguageSelectedListener.onLanguageSelected(languages.get(getAdapterPosition()));
 		}
 	}
+
+	private List<Language> languages;
+	private Map<Language, Long> projectsCount = new HashMap<>();
+	private OnLanguageSelectedListener onLanguageSelectedListener;
 
 	public LanguageAdapter(Context context) {
 		updateData(context);

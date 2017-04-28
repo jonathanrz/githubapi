@@ -1,4 +1,4 @@
-package com.jonathanzanella.githubapi;
+package com.jonathanzanella.githubapi.database;
 
 public interface Model {
 	Long getId();

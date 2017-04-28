@@ -1,5 +1,6 @@
 package com.jonathanzanella.githubapi;
 
+import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -29,8 +30,10 @@ public class MainActivity extends AppCompatActivity implements LanguageAdapter.O
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		Intent intent = new Intent(this, SyncService.class);
-		bindService(intent, this, Context.BIND_AUTO_CREATE);
+		if(syncServiceIsRunning()) {
+			Intent intent = new Intent(this, SyncService.class);
+			bindService(intent, this, 0);
+		}
 
 		RecyclerView recyclerView = (RecyclerView) findViewById(R.id.act_main_language_list);
 		viewUpdateDataMessage = (TextView) findViewById(R.id.act_main_updating_data_message);
@@ -41,10 +44,21 @@ public class MainActivity extends AppCompatActivity implements LanguageAdapter.O
 		recyclerView.setLayoutManager(new LinearLayoutManager(this));
 	}
 
+	private boolean syncServiceIsRunning() {
+		ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+		for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+			if (service.service.getClassName().equals(SyncService.class.getName())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	@Override
 	protected void onStop() {
 		super.onStop();
-		unbindService(this);
+		if(syncService != null)
+			unbindService(this);
 	}
 
 	@Override

@@ -8,7 +8,7 @@ public class Where {
 		private Fields field;
 		private String operation;
 
-		public Query(Fields field) {
+		Query(Fields field) {
 			this.field = field;
 		}
 
@@ -35,13 +35,6 @@ public class Where {
 		query.operation = operation;
 	}
 
-	public Where notEq(String s) {
-		isExpectingFieldDefinition();
-		setLastQueryOperation("!=");
-		values.add(s);
-		return this;
-	}
-
 	public Where eq(String s) {
 		isExpectingFieldDefinition();
 		setLastQueryOperation("=");
@@ -63,21 +56,7 @@ public class Where {
 		return this;
 	}
 
-	public Where lessThanOrEq(Long l) {
-		isExpectingFieldDefinition();
-		setLastQueryOperation("<=");
-		values.add(l.toString());
-		return this;
-	}
-
-	public Where greaterThanOrEq(Long l) {
-		isExpectingFieldDefinition();
-		setLastQueryOperation(">=");
-		values.add(l.toString());
-		return this;
-	}
-
-	public Where queryIn(List<String> list) {
+	Where queryIn(List<String> list) {
 		String string = "in (";
 		for (String s : list) {
 			string = string + "?,";
@@ -89,7 +68,7 @@ public class Where {
 		return this;
 	}
 
-	public Where and(Fields field) {
+	Where and(Fields field) {
 		queries.add(new Query(field));
 		return this;
 	}
@@ -105,7 +84,7 @@ public class Where {
 		return new Select(query.toString(), values.toArray(new String[0]));
 	}
 
-	public Where orderBy(Fields field) {
+	Where orderBy(Fields field) {
 		orderBy = field.toString();
 		return this;
 	}
@@ -115,7 +94,7 @@ public class Where {
 		return this;
 	}
 
-	public String orderBy() {
+	String orderBy() {
 		return orderBy;
 	}
 

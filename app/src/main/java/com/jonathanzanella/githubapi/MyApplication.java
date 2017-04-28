@@ -3,7 +3,6 @@ package com.jonathanzanella.githubapi;
 import android.app.Application;
 import android.content.Intent;
 
-import com.facebook.stetho.Stetho;
 import com.jonathanzanella.githubapi.database.DatabaseHelper;
 import com.jonathanzanella.githubapi.sync.SyncService;
 
@@ -15,7 +14,6 @@ public class MyApplication extends Application {
 		super.onCreate();
 
 		JodaTimeAndroid.init(this);
-		Stetho.initializeWithDefaults(this);
 		new DatabaseHelper(this).runMigrations();
 
 		startService(new Intent(this, SyncService.class));

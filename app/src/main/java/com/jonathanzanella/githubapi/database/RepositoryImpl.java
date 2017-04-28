@@ -6,8 +6,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.jonathanzanella.githubapi.Model;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,7 +66,7 @@ public class RepositoryImpl<T extends Model> implements Repository<T> {
 				Long newId = db.insertOrThrow(table.getName(), null, table.fillContentValues(data));
 				data.setId(newId);
 			} catch (SQLException e) {
-				Log.e("Project", "error inserting the record into the database, error=" + e.getMessage());
+				Log.e(getClass().getSimpleName(), "error inserting the record into the database, error=" + e.getMessage());
 				throw e;
 			}
 		} else {

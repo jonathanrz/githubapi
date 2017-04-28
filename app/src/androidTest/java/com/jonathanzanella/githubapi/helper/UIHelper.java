@@ -1,4 +1,4 @@
-package com.jonathanzanella.githubapi;
+package com.jonathanzanella.githubapi.helper;
 
 import android.support.annotation.NonNull;
 import android.support.test.espresso.ViewInteraction;
@@ -46,11 +46,8 @@ public class UIHelper {
 			@Override
 			protected boolean matchesSafely(final RecyclerView view) {
 				RecyclerView.ViewHolder viewHolder = view.findViewHolderForAdapterPosition(position);
-				if (viewHolder == null) {
-					// has no item on such position
-					return false;
-				}
-				return itemMatcher.matches(viewHolder.itemView);
+				// has no item on such position
+				return viewHolder != null && itemMatcher.matches(viewHolder.itemView);
 			}
 		};
 	}

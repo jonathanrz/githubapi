@@ -8,7 +8,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.google.gson.GsonBuilder;
-import com.jonathanzanella.githubapi.DateTimeDeserializer;
+import com.jonathanzanella.githubapi.helper.DateTimeDeserializer;
 import com.jonathanzanella.githubapi.database.DatabaseHelper;
 import com.jonathanzanella.githubapi.database.RepositoryImpl;
 import com.jonathanzanella.githubapi.github.GitHubRepository;
@@ -33,7 +33,6 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SyncService extends Service {
-
 	public static final String GITHUB_USER = "BearchInc";
 
 	public class SyncServiceBinder extends Binder {

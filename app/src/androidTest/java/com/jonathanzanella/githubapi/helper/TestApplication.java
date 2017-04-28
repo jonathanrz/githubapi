@@ -1,4 +1,4 @@
-package com.jonathanzanella.githubapi;
+package com.jonathanzanella.githubapi.helper;
 
 import android.app.Application;
 

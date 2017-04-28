@@ -25,7 +25,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withTagValue;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static com.jonathanzanella.githubapi.UIHelper.matchToolbarTitle;
+import static com.jonathanzanella.githubapi.helper.UIHelper.matchToolbarTitle;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.AllOf.allOf;
 
@@ -48,7 +48,7 @@ public class MainActivityTest {
 	}
 
 	@Test
-	public void showRepoCountForFirstLanguage() throws Exception {
+	public void showProjectCountForFirstLanguage() throws Exception {
 		ProjectRepository projectRepository = new ProjectRepository(new RepositoryImpl<Project>(new DatabaseHelper(getTargetContext())));
 		Language language = languages.get(0);
 		long count = projectRepository.countProjectsOfLanguage(language.getId());

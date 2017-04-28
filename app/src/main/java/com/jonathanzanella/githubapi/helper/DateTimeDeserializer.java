@@ -1,4 +1,4 @@
-package com.jonathanzanella.githubapi;
+package com.jonathanzanella.githubapi.helper;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
