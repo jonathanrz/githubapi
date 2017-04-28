@@ -7,5 +7,5 @@
 	<string name="number_of_projects">Number of projects:</string>
 	<string name="created_at">Created at:</string>
 	<string name="updated_at">Updated at:</string>
-	<string name="number_of_issues">Number of issues:</string>
+	<string name="number_of_issues">Issues:</string>
 </resources>

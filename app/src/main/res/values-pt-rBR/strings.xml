@@ -1,0 +1,11 @@
+<resources>
+	<string name="app_name">GithubApi</string>
+	<string name="main_activity_title">Linguagens dos projetos da Bearch Inc</string>
+	<string name="main_activity_language">Projetos escritos em</string>
+	<string name="date_updated">Dados atualizados</string>
+	<string name="error_updating_date">Ocorreu um erro ao atualizar os dados</string>
+	<string name="number_of_projects">Número de projetos:</string>
+	<string name="created_at">Criado em:</string>
+	<string name="updated_at">Atualizado em:</string>
+	<string name="number_of_issues">Questões:</string>
+</resources>
