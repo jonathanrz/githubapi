@@ -25,3 +25,4 @@ The ORM is not full developed but since it was what I am used to use in my proje
 ### SyncService
 
 The sync service is a over engineered solution for a simple request, but since the idea of this project is to avaliate my android knowledge, I thought that it was a good idea to use a service.
+The idea for the cache invalidation was to always keep data available for the user, even during the sync service execution.
